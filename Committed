@@ -1,0 +1,349 @@
+local args = {
+[1] = "rbxassetid://9127017202",
+[2] = game:GetService("Players").LocalPlayer.Character.Torso
+}
+
+game:GetService("ReplicatedStorage"):WaitForChild("PlaySoundRemote"):InvokeServer(unpack(args))
+
+-- Get the local player and their character
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Function to make the character, including hair and clothing, solid black
+local function makeCharacterBlack()
+    for _, descendant in pairs(character:GetDescendants()) do
+        if descendant:IsA("BasePart") or descendant:IsA("MeshPart") or descendant:IsA("Accessory") then
+            if descendant:IsA("Accessory") and descendant:FindFirstChild("Handle") then
+                descendant.Handle.Color = Color3.new(0, 0, 0) -- Turn accessory handle black
+                descendant.Handle.Material = Enum.Material.SmoothPlastic
+            else
+                descendant.Color = Color3.new(0, 0, 0) -- Turn body parts black
+                descendant.Material = Enum.Material.SmoothPlastic
+            end
+        end
+
+        if descendant:IsA("Clothing") or descendant:IsA("ShirtGraphic") then
+            descendant:Destroy() -- Remove clothing to make the body appear solid black
+        end
+
+        if descendant:IsA("Decal") or descendant:IsA("Texture") then
+            descendant:Destroy() -- Remove decals or textures
+        end
+    end
+end
+
+-- Execute the function
+makeCharacterBlack()
+
+local ModelDeath = game:GetObjects("rbxassetid://12195574482")[1]
+if ModelDeath then
+    for i,a in pairs(ModelDeath.Torso:GetDescendants()) do
+        if a.Name == "Attachment4" or a.Name == "Flare" or a.Name == "Star3" or a.Name == "Bits" then
+            a:Destroy() 
+        end
+    end
+    for i,a in pairs(ModelDeath.Torso:GetChildren()) do
+        if a.ClassName == "Attachment" and a:FindFirstChildWhichIsA("ParticleEmitter") then
+            a:Clone().Parent = game.Players.LocalPlayer.Character.Torso
+        end
+    end
+    ModelDeath:Destroy()
+end
+
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+-- Initial teleport to position -8, 15, -5
+if character and character:FindFirstChild("HumanoidRootPart") then
+    character.HumanoidRootPart.CFrame = CFrame.new(-8, 15, -5)
+end
+
+for i, v in pairs(game.ReplicatedStorage._NETWORK:GetChildren()) do
+    if v.ClassName == "RemoteEvent" then
+        v:FireServer("Titan")
+    end
+end
+
+task.wait(0.001)
+args = { [1] = "Transform" }
+game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args))
+
+task.wait(0.001)
+for i, v in pairs(game.ReplicatedStorage._NETWORK:GetChildren()) do
+    if v.ClassName == "RemoteEvent" then
+        v:FireServer("Titan")
+    end
+end
+
+task.wait(0.001)
+for i, v in pairs(game.ReplicatedStorage._NETWORK:GetChildren()) do
+    if v.ClassName == "RemoteEvent" then
+        v:FireServer("Diamond")
+    end
+end
+
+-- Wait 0.5 seconds and activate Rockmode
+task.wait(0.5)
+game:GetService("ReplicatedStorage").Rockmode:FireServer()
+task.wait(2.5)
+game:GetService("ReplicatedStorage").Rockmode:FireServer()
+
+-- Wait 1.2 seconds, then teleport to position -6, 22, -2 and set walk speed to 45
+task.wait(1.2)
+character = player.Character or player.CharacterAdded:Wait()
+if character and character:FindFirstChild("HumanoidRootPart") and character:FindFirstChild("Humanoid") then
+    character.HumanoidRootPart.CFrame = CFrame.new(-6, 22, -2)
+    character.Humanoid.WalkSpeed = 45
+end
+
+task.wait(3)
+-- REAPLACE GLOVE NAME WITH GLOVE U WANNA EQUIP CASE SENSITIVE!!
+for i, v in pairs (game.ReplicatedStorage._NETWORK:GetChildren()) do if v.ClassName == "RemoteEvent" then
+v:FireServer("Titan")
+end
+end
+
+task.wait(3)
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://16299510063"
+local animationTrack = humanoid:LoadAnimation(animation)
+animationTrack.Looped = true
+
+humanoid.Running:Connect(function(speed)
+    if speed > 0 then
+        if not animationTrack.IsPlaying then
+            animationTrack:Play()
+        end
+    else
+        if animationTrack.IsPlaying then
+            animationTrack:Stop()
+        end
+    end
+end)
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 75, 0, 75) -- Smaller size
+button.Position = UDim2.new(1, -120, 0, 50) -- Positioned a bit up and to the right
+button.AnchorPoint = Vector2.new(1, 0) -- Anchor to the top-right corner for better alignment
+button.BackgroundColor3 = Color3.new(0, 0, 0) -- Black background
+button.Text = "Smash"
+button.TextColor3 = Color3.new(1, 1, 1) -- White text
+button.Font = Enum.Font.SourceSansBold
+button.TextSize = 20
+button.Parent = screenGui
+
+button.ClipsDescendants = true -- Ensures the button content clips to the shape
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0) -- Makes the button fully circular
+corner.Parent = button
+
+local countdownLabel = Instance.new("TextLabel")
+countdownLabel.Size = UDim2.new(0, 200, 0, 50) -- Size of the countdown label
+countdownLabel.Position = UDim2.new(0.5, -100, 1, -60) -- Centered at the bottom of the screen
+countdownLabel.AnchorPoint = Vector2.new(0.5, 1)
+countdownLabel.BackgroundColor3 = Color3.new(0, 0, 0) -- Black background
+countdownLabel.TextColor3 = Color3.new(1, 1, 0) -- Yellow text
+countdownLabel.Font = Enum.Font.SourceSansBold
+countdownLabel.TextSize = 24
+countdownLabel.Text = ""
+countdownLabel.Visible = false -- Hidden until countdown starts
+countdownLabel.Parent = screenGui
+
+local cooldownTime = 5.5 -- Cooldown time in seconds
+local canClick = true
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local humanoid = character:WaitForChild("Humanoid")
+
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://17274903927"
+
+button.MouseButton1Click:Connect(function()
+    if canClick then
+        canClick = false -- Disable clicking during cooldown
+        
+        -- Play the animation
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+
+        
+        local args1 = {
+            [1] = "UseAbility",
+            [2] = rootPart.CFrame.Position -- Character's current position
+        }
+        game:GetService("ReplicatedStorage").GeneralAbility:FireServer(unpack(args1))
+
+        
+        local args2 = {
+            [1] = "Ban Hammer"
+        }
+        game:GetService("ReplicatedStorage").RetroAbility:FireServer(unpack(args2))
+
+       
+        countdownLabel.Visible = true
+        for i = cooldownTime, 0, -0.1 do
+            countdownLabel.Text = string.format("%.1f", i)
+            task.wait(0.1)
+        end
+        countdownLabel.Visible = false
+       
+        canClick = true
+    end
+end)
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Button
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 75, 0, 75) -- Circular size
+button.Position = UDim2.new(0.5, -50, 0.5, -50) -- Centered on the screen
+button.AnchorPoint = Vector2.new(0.5, 0.5)
+button.BackgroundColor3 = Color3.new(0, 0, 0) -- Black background
+button.Text = "Sonic" -- Button text
+button.TextColor3 = Color3.new(1, 1, 1) -- White text color
+button.Font = Enum.Font.SourceSansBold
+button.TextSize = 24
+button.Parent = screenGui
+
+-- Make the button circular
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0) -- Fully circular
+corner.Parent = button
+
+-- Main script variables
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local slapDistance = 30
+local slapCooldown = 0.585
+local lastSlapTime = 0
+local slapEnabled = false
+local selectedRemote = "GeneralHit"
+
+-- Load the animation
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://15437009238"
+local animationTrack = character:WaitForChild("Humanoid"):LoadAnimation(animation)
+animationTrack.Looped = true
+
+-- Function to slap the closest player
+local function slapClosestPlayer()
+    if not slapEnabled then return end
+
+    local closestPlayer = nil
+    local closestDistance = slapDistance
+
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local playerPosition = player.Character.HumanoidRootPart.Position
+
+        for _, otherPlayer in pairs(Players:GetPlayers()) do
+            if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local otherPlayerPosition = otherPlayer.Character.HumanoidRootPart.Position
+                local distance = (playerPosition - otherPlayerPosition).Magnitude
+
+                if distance <= closestDistance then
+                    closestDistance = distance
+                    closestPlayer = otherPlayer
+                end
+            end
+        end
+
+        if closestPlayer and tick() - lastSlapTime >= slapCooldown then
+            lastSlapTime = tick()
+            if closestPlayer.Character and closestPlayer.Character:FindFirstChild("Head") then
+                local head = closestPlayer.Character.Head
+                local args = {head}
+                local remote = ReplicatedStorage:FindFirstChild(selectedRemote)
+                if remote then
+                    remote:FireServer(unpack(args))
+                else
+                    warn("Remote not found:", selectedRemote)
+                end
+            end
+        end
+    end
+end
+
+-- Connect to RenderStepped to continuously run the slap function
+RunService.RenderStepped:Connect(function()
+    if slapEnabled then
+        slapClosestPlayer()
+    end
+end)
+
+-- Button click event to start the functions for 10 seconds
+button.MouseButton1Click:Connect(function()
+    if not slapEnabled then
+        slapEnabled = true
+        button.Text = "Active"
+
+        -- Start the animation in a loop
+        animationTrack:Play()
+
+        -- Run the functions for 10 seconds, then stop
+        task.delay(10, function()
+            slapEnabled = false
+            animationTrack:Stop()
+            button.Text = "Sonic"
+        end)
+    end
+end)
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create Button
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 75, 0, 75) -- Circular size
+button.Position = UDim2.new(0.5, 120, 0.5, -50) -- Adjust position as needed
+button.AnchorPoint = Vector2.new(0.5, 0.5)
+button.BackgroundColor3 = Color3.new(0, 0, 0) -- Black background
+button.Text = "Vanish" -- Button text
+button.TextColor3 = Color3.new(1, 1, 1) -- White text color
+button.Font = Enum.Font.SourceSansBold
+button.TextSize = 24
+button.Parent = screenGui
+
+-- Make the button circular
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0) -- Fully circular
+corner.Parent = button
+
+-- Load the animation
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://111726999347835" -- New animation ID
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local animationTrack = humanoid:LoadAnimation(animation)
+animationTrack.Looped = false -- Play only once
+
+-- Button click event
+button.MouseButton1Click:Connect(function()
+    -- Play the animation
+    animationTrack:Play()
+
+    -- Wait 0.3 seconds before firing the invisibility ability
+    task.wait(0.3)
+
+    -- Fire the invisibility ability
+    local args = {
+        [1] = "Invisibility"
+    }
+    game:GetService("ReplicatedStorage").AdminAbility:FireServer(unpack(args))
+end)
